@@ -27,10 +27,11 @@ def upgrade() -> None:
     op.bulk_insert(categories_table, [
         {'id': 1, 'name': 'Fitness'},
         {'id': 2, 'name': 'Work'},
-        {'id': 3, 'name': None},
-        {'id': 4, 'name': None},
+        {'id': 3, 'name': 'Work'},
+        {'id': 4, 'name': 'School'},
         {'id': 5, 'name': 'Health'}
     ])
+    op.execute("SELECT setval('categories_id_seq', (SELECT MAX(id) FROM categories))")
 
 
 def downgrade() -> None:
