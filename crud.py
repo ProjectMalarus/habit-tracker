@@ -1,9 +1,18 @@
-from dependencies import get_db
 from models import User
 from hash_password import create_hashed_password
 from sqlalchemy.orm import Session
+from database import SessionLocal
+import schemas
 
-myUser = User()
-myUser.hashed_password = create_hashed_password("password")
+def create_User(db : Session, username: str, password : str):
+    myUser = User()
+    myUser.username = username
+    myUser.hashed_password = create_hashed_password(password)
+    db.add(myUser)
+    db.commit()
 
-def addUser(db = )
+mySession = SessionLocal()
+
+create_User(mySession, "malachi", "password")
+
+mySession.close()
