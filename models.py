@@ -9,7 +9,7 @@ class User(Base):
     #fields
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(20), unique=True, nullable=False)
-    hashed_password = Column(String(20), nullable=False)
+    hashed_password = Column(String(100), nullable=False)
 
 #Categories Table
 class Category(Base):
