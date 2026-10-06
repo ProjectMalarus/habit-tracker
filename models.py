@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, DateTime, String, Date, Boolean, Text, ForeignKey, UniqueConstraint
 from sqlalchemy import func
+from sqlalchemy.orm import relationship
 from database import Base
 
 #User Table
@@ -10,6 +11,9 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(20), unique=True, nullable=False)
     hashed_password = Column(String(100), nullable=False)
+
+    #cascade deletion
+    habits = relationship("Habit", cascade="all, delete", passive_deletes=True, back_populates="user")
 
 #Categories Table
 class Category(Base):
@@ -26,11 +30,14 @@ class Habit(Base):
     #fields
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50), nullable=False)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     category_id = Column(Integer, ForeignKey("categories.id"))
     current_streak = Column(Integer, nullable=False, default=0)
     longest_streak = Column(Integer, nullable=False, default=0)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    #relationship
+    user = relationship("User", back_populates="habits")
 
 #Check-Ins Table
 class Check_In(Base):

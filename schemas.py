@@ -7,6 +7,10 @@ class UserCreate(BaseModel):
     username: str
     password: str #plain text will be hashed in CRUD
 
+class UserLogin(BaseModel):
+    username: str
+    password: str #plain text will be hashed in CRUD
+
 class UserResponse(BaseModel):
     id: int
     username: str 

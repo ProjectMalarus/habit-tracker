@@ -13,11 +13,10 @@ def create_user(db : Session, user: schemas.UserCreate):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
+    return db_user
 
 def delete_user(db: Session, user_id: int):
     db_user = db.query(models.User).filter(models.User.id == user_id).first()
-    if db_user is None:
-        raise exceptions.UserNotFoundError(f"User with {user_id} is not found")
     db.delete(db_user)
     db.commit()
 
@@ -33,6 +32,13 @@ def create_habit(db: Session, habit: schemas.HabitCreate):
     db.add(db_habit)    
     db.commit()
     db.refresh(db_habit)
+
+def get_habits_by_user(db: Session, user: models.User):
+    return db.query(models.Habit).filter(models.Habit.user_id == user.id).all()
+
+def delete_habit(db: Session, habit: models.Habit):
+    db.delete(habit)
+    db.commit()
 
 #--------CATEGORY CRUD--------
 def create_category(db: Session, category: schemas.CategoryCreate):
